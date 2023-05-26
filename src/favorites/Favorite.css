@@ -1,0 +1,14 @@
+.character-item {
+    margin-bottom: 10px;
+  }
+  
+  .character-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .character-link:hover {
+    text-decoration: underline;
+  }
+  

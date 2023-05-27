@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import './styles.css';
 import { Favorite } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
+import FavoriteList from '../favorites/FavoriteList';
+import CharacterItemList from './CharacterItemList';
 
 const CharacterList = () => {
   const { id } = useParams();
@@ -89,36 +90,14 @@ const CharacterList = () => {
         </button>
       </div>
       {showFavorites && (
-        <div className="favorite-list">
-          <h3>Favorite Characters:</h3>
-          {favorites.length > 0 ? (
-            favorites.map((favorite) => (
-              <div className="character-item" key={favorite.url}>
-                <Link className="character-link" to={`/characters/${getIdFromUrl(favorite.url)}`}>
-                  {favorite.name}
-                </Link>
-              </div>
-            ))
-          ) : (
-            <div>No favorite characters yet.</div>
-          )}
-        </div>
+        <FavoriteList favorites={favorites} getIdFromUrl={getIdFromUrl} />
       )}
-      <div className="character-list">
-        {characters.map((character) => (
-          <div className="character-item" key={character.url}>
-            <Link to={`/characters/${getIdFromUrl(character.url)}`}>
-              <img src={character.image} alt={character.name} className="character-image" />
-              <div className="character-name">{character.name}</div>
-            </Link>
-            <button className="favorite-button" onClick={() => handleFavorite(character)}>
-              {favorites.some((favorite) => favorite.url === character.url)
-                ? 'Remove Favorite'
-                : 'Add Favorite'}
-            </button>
-          </div>
-        ))}
-      </div>
+      <CharacterItemList
+        characters={characters}
+        favorites={favorites}
+        getIdFromUrl={getIdFromUrl}
+        handleFavorite={handleFavorite}
+      />
       <div className="pagination-buttons">
         <button className="pagination-button" onClick={handlePrevPage} disabled={!prevPage}>
           Previous
@@ -132,4 +111,3 @@ const CharacterList = () => {
 };
 
 export default CharacterList;
-

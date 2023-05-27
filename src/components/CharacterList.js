@@ -36,7 +36,7 @@ const CharacterList = () => {
       console.error('Error fetching characters:', error);
     }
     try {
-      // Fetch the user's favorites from the backend API
+      
       const favoritesResponse = await axios.get(`https://swapi.dev/api/people/${id}/favorites`);
       setFavorites(favoritesResponse.data);
     } catch (error) {

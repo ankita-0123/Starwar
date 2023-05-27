@@ -35,10 +35,42 @@ const CharacterList = () => {
     } catch (error) {
       console.error('Error fetching characters:', error);
     }
+    try {
+      // Fetch the user's favorites from the backend API
+      const favoritesResponse = await axios.get(`https://swapi.dev/api/people/${id}/favorites`);
+      setFavorites(favoritesResponse.data);
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+    }
   };
 
   useEffect(() => {
     fetchCharacters();
+  }, []);
+
+  useEffect(() => {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+      setFavorites(JSON.parse(storedFavorites));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  useEffect(() => {
+    const handlePageRefresh = () => {
+      
+      localStorage.removeItem('favorites');
+      fetchCharacters();
+    };
+
+    window.addEventListener('beforeunload', handlePageRefresh);
+
+    return () => {
+      window.removeEventListener('beforeunload', handlePageRefresh);
+    };
   }, []);
 
   const getIdFromUrl = (url) => {
@@ -83,15 +115,13 @@ const CharacterList = () => {
 
   return (
     <div className="container">
-      <h2>Character List</h2>
+      <h2>STARWARS</h2>
       <div className="favorite-link-container">
         <button className="favorite-link" onClick={handleShowFavorites}>
           <Favorite /> ({favorites.length})
         </button>
       </div>
-      {showFavorites && (
-        <FavoriteList favorites={favorites} getIdFromUrl={getIdFromUrl} />
-      )}
+      {showFavorites && <FavoriteList favorites={favorites} getIdFromUrl={getIdFromUrl} />}
       <CharacterItemList
         characters={characters}
         favorites={favorites}
@@ -111,3 +141,4 @@ const CharacterList = () => {
 };
 
 export default CharacterList;
+

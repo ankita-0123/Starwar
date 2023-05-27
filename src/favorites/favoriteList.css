@@ -1,0 +1,22 @@
+.favorite-list {
+    margin-top: 20px;
+  }
+  
+  .favorite-list h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .character-item {
+    margin-bottom: 10px;
+  }
+  
+  .character-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .character-link:hover {
+    text-decoration: underline;
+  }
+  

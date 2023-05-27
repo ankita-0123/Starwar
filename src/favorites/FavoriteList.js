@@ -1,15 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import './favoriteList.css';
 
 const FavoriteList = ({ favorites, getIdFromUrl }) => {
+  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+
+  
+  useEffect(() => {
+    const storedFavorites = localStorage.getItem('favoriteCharacters');
+    if (storedFavorites) {
+      setFavoriteCharacters(JSON.parse(storedFavorites));
+    }
+  }, []);
+  
+
+  
+  useEffect(() => {
+    localStorage.setItem('favoriteCharacters', JSON.stringify(favoriteCharacters));
+  }, [favoriteCharacters]);
+
+  useEffect(() => {
+    setFavoriteCharacters(favorites);
+  }, [favorites]);
+
   return (
     <div className="favorite-list">
       <h3>Favorite Characters:</h3>
-      {favorites.length > 0 ? (
-        favorites.map((favorite) => (
-          <div className="character-item" key={favorite.url}>
-            <Link className="character-link" to={`/characters/${getIdFromUrl(favorite.url)}`}>
-              {favorite.name}
+      {favoriteCharacters.length > 0 ? (
+        favoriteCharacters.map((character) => (
+          <div className="character-item" key={character.url}>
+            <Link className="character-link" to={`/characters/${getIdFromUrl(character.url)}`}>
+              {character.name}
             </Link>
           </div>
         ))
